@@ -7,3 +7,4 @@ import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
     <routerView />
   </el-config-provider>
 </template>
+<style lang="scss" scoped></style>
