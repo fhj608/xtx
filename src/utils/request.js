@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '@/router'
 
 const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net'
 
@@ -24,11 +25,22 @@ instance.interceptors.response.use(
     // 2xx 范围内的状态码都会触发该函数。
     // 对响应数据做点什么
     const data = response.data
+    if (data.code !== '1') {
+      ElMessage.error(data.msg || data.message || '服务异常')
+      return Promise.reject(data)
+    }
     return data
   },
   function (error) {
     // 超出 2xx 范围的状态码都会触发该函数。
     // 对响应错误做点什么
+    if (error.response?.status === 401) {
+      // ElMessage.error(error.response.data.message || '服务异常')
+      router.push('/login')
+    } else {
+      ElMessage.error(error.response.data.message || '服务异常')
+      return Promise.reject(error)
+    }
     return Promise.reject(error)
   }
 )
