@@ -5,3 +5,5 @@ export const getBannerApi = () => request.get('/home/banner')
 export const getNewApi = () => request.get('/home/new')
 
 export const getHotApi = () => request.get('/home/hot')
+
+export const getGoodsApi = () => request.get('/home/goods')
