@@ -1,5 +1,6 @@
 import axios from 'axios'
 import router from '@/router'
+import { useUserStore } from '@/stores'
 
 const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net'
 
@@ -11,6 +12,10 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // 在发送请求之前做些什么
+    const userStore = useUserStore()
+    if (userStore.userInfo.token) {
+      config.headers.Authorization = `Bearer ${userStore.userInfo.token}`
+    }
     return config
   },
   function (error) {
