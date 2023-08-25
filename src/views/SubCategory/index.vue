@@ -46,6 +46,7 @@ const load = async () => {
 </script>
 
 <template>
+  <el-button type="primary" />
   <div class="container">
     <!-- 面包屑 -->
     <div class="bread-container">

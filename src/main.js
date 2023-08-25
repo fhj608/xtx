@@ -10,7 +10,6 @@ import '@/styles/common.scss'
 import { imgLazyPlugin } from '@/directives'
 
 const app = createApp(App)
-
 app.use(pinia)
 app.use(router)
 app.use(imgLazyPlugin)

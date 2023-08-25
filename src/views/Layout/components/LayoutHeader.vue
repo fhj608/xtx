@@ -1,7 +1,10 @@
 <script setup>
 import { useCategoryStore } from '@/stores'
 import { useScroll } from '@vueuse/core'
+import HeaderCart from './headerCart.vue'
+import { useUserStore } from '@/stores'
 
+const userStore = useUserStore()
 const categoryStore = useCategoryStore()
 categoryStore.getCategory()
 const { y } = useScroll(window)
@@ -28,6 +31,7 @@ const { y } = useScroll(window)
         <input type="text" placeholder="搜一搜" />
       </div>
       <!-- 头部购物车 -->
+      <HeaderCart v-if="userStore.userInfo.token" />
     </div>
   </header>
 </template>

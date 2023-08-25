@@ -1,8 +1,15 @@
 <script setup>
 import { getGoodDetailService } from '@/api/detail'
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import DetailHot from './components/DetailHot.vue'
+import { useCartStore } from '@/stores'
+import { useUserStore } from '@/stores'
+import { ElMessage } from 'element-plus'
+
+const router = useRouter()
+const userStore = useUserStore()
+const cartStore = useCartStore()
 const route = useRoute()
 const good = ref({})
 const getGood = async () => {
@@ -12,8 +19,30 @@ const getGood = async () => {
 onMounted(() => {
   getGood()
 })
+const count = ref(1)
+let skuObj = ref({})
 const handleSkuChange = (sku) => {
-  console.log(sku)
+  skuObj.value = sku
+  count.value = 1
+  if (sku.skuId) {
+    good.value.price = sku.price
+    good.value.oldPrice = sku.oldPrice
+  }
+}
+const handleAddCart = () => {
+  if (!userStore.userInfo.token) {
+    ElMessage.warning('请先登录')
+    router.push('/login')
+    return
+  }
+  if (!skuObj.value.skuId) {
+    ElMessage.warning('请选择商品规格')
+  } else {
+    cartStore.addCart({
+      skuId: skuObj.value.skuId,
+      count: count.value
+    })
+  }
 }
 </script>
 
@@ -91,10 +120,17 @@ const handleSkuChange = (sku) => {
               <!-- sku组件 -->
               <XtxSku :goods="good" @change="handleSkuChange" />
               <!-- 数据组件 -->
-
+              <el-input-number
+                v-model="count"
+                :min="1"
+                :max="skuObj.inventory || 1"
+                :disabled="!skuObj.skuId"
+              />
               <!-- 按钮组件 -->
               <div>
-                <el-button size="large" class="btn"> 加入购物车 </el-button>
+                <el-button size="large" class="btn" @click="handleAddCart">
+                  加入购物车
+                </el-button>
               </div>
             </div>
           </div>

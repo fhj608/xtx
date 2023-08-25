@@ -355,12 +355,3 @@ const handleSubmit = async () => {
   color: #fff;
 }
 </style>
-<style lang="scss">
-.el-checkbox__input.is-checked + .el-checkbox__label {
-  color: $xtxColor;
-}
-.el-checkbox__input.is-checked .el-checkbox__inner {
-  background-color: $xtxColor;
-  border-color: $xtxColor;
-}
-</style>
