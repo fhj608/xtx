@@ -1,7 +1,7 @@
 <script setup>
 import { useCategoryStore } from '@/stores'
 import { useScroll } from '@vueuse/core'
-import HeaderCart from './headerCart.vue'
+import HeaderCart from './HeaderCart.vue'
 import { useUserStore } from '@/stores'
 
 const userStore = useUserStore()

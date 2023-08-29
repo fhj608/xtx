@@ -36,9 +36,7 @@ const disabled = ref(false)
 const load = async () => {
   requestDate.value.page++
   const { result } = await getCategoryGoodsService(requestDate.value)
-  console.log(goodsList.value)
   goodsList.value = [...goodsList.value, ...result.items]
-  console.log(goodsList.value)
   if (result.items.length === 0) {
     disabled.value = true
   }

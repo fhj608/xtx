@@ -5,7 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import DetailHot from './components/DetailHot.vue'
 import { useCartStore } from '@/stores'
 import { useUserStore } from '@/stores'
-import { ElMessage } from 'element-plus'
+import GoodSku from './components/GoodSku.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -47,9 +47,9 @@ const handleAddCart = () => {
 </script>
 
 <template>
-  <div class="xtx-goods-page">
+  <div class="xtx-goods-page" v-if="good.categories">
     <div class="container">
-      <div class="bread-container" v-if="good.categories">
+      <div class="bread-container">
         <el-breadcrumb separator=">">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
           <el-breadcrumb-item
@@ -64,7 +64,7 @@ const handleAddCart = () => {
         </el-breadcrumb>
       </div>
       <!-- 商品信息 -->
-      <div class="info-container" v-if="good.categories">
+      <div class="info-container">
         <div>
           <div class="goods-info">
             <div class="media">
@@ -89,7 +89,7 @@ const handleAddCart = () => {
                 </li>
                 <li>
                   <p>品牌信息</p>
-                  <p>{{ good.brand.name }}</p>
+                  <p>{{ good.brand?.name }}</p>
                   <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
                 </li>
               </ul>
@@ -118,13 +118,13 @@ const handleAddCart = () => {
                 </dl>
               </div>
               <!-- sku组件 -->
-              <XtxSku :goods="good" @change="handleSkuChange" />
+              <GoodSku :goods="good" @change="handleSkuChange" />
               <!-- 数据组件 -->
               <el-input-number
                 v-model="count"
                 :min="1"
                 :max="skuObj.inventory || 1"
-                :disabled="!skuObj.skuId"
+                :disabled="!skuObj.id"
               />
               <!-- 按钮组件 -->
               <div>

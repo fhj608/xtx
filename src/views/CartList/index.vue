@@ -1,19 +1,8 @@
 <script setup>
 import { useCartStore } from '@/stores'
-import { computed } from 'vue'
+
 const cartStore = useCartStore()
-const totalCount = computed(() =>
-  cartStore.cartList.reduce((sum, item) => sum + item.count, 0)
-)
-const isAllSelected = computed(() => {
-  return cartStore.cartList.every((item) => item.selected)
-})
-const isIndeterminate = computed(() => {
-  return (
-    cartStore.cartList.some((item) => item.selected) &&
-    !cartStore.cartList.every((item) => item.selected)
-  )
-})
+
 const handleCheckChange = (flag, id) => {
   cartStore.changeCartSelect({
     selected: flag,
@@ -23,24 +12,6 @@ const handleCheckChange = (flag, id) => {
 const handleAllCheckChange = (flag) => {
   cartStore.changeCartSelect({ selected: flag })
 }
-const selectedCount = computed(() =>
-  cartStore.cartList.reduce((sum, item) => {
-    if (item.selected === true) {
-      return sum + item.count
-    } else {
-      return sum
-    }
-  }, 0)
-)
-const selectedPrcie = computed(() =>
-  cartStore.cartList.reduce((sum, item) => {
-    if (item.selected === true) {
-      return sum + item.count * item.price
-    } else {
-      return sum
-    }
-  }, 0)
-)
 </script>
 
 <template>
@@ -52,8 +23,8 @@ const selectedPrcie = computed(() =>
             <tr>
               <th width="120">
                 <el-checkbox
-                  :indeterminate="isIndeterminate"
-                  :model-value="isAllSelected"
+                  :indeterminate="cartStore.isIndeterminate"
+                  :model-value="cartStore.isAllSelected"
                   v-if="cartStore.cartList.length !== 0"
                   @change="handleAllCheckChange"
                 />
@@ -130,11 +101,17 @@ const selectedPrcie = computed(() =>
       <!-- 操作栏 -->
       <div class="action">
         <div class="batch">
-          共 {{ totalCount }} 件商品，已选择 {{ selectedCount }} 件，商品合计：
-          <span class="red">¥ {{ selectedPrcie.toFixed(2) }} </span>
+          共 {{ cartStore.totalCount }} 件商品，已选择
+          {{ cartStore.selectedCount }} 件，商品合计：
+          <span class="red">¥ {{ cartStore.selectedPrice.toFixed(2) }} </span>
         </div>
         <div class="total">
-          <el-button size="large" type="primary">下单结算</el-button>
+          <el-button
+            size="large"
+            type="primary"
+            @click="$router.push('/checkout')"
+            >下单结算</el-button
+          >
         </div>
       </div>
     </div>
